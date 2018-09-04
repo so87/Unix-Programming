@@ -1,6 +1,6 @@
 My function: sin(0) = 0
 Library    : sin(0) = 0
-My function: cos(0) = 0
+My function: cos(0) = 1
 Library    : cos(0) = 1
 My function: tan(0) = 0
 Library    : tan(0) = 0
@@ -130,81 +130,4 @@ My function: cos(3.14159) = -0.999996
 Library    : cos(3.14159) = -1
 My function: tan(3.14159) = 0.000788177
 Library    : tan(3.14159) = -1.22465e-16
-
-My function: sin(3.1837e-314) = 3.1837e-314
-Library    : sin(3.1837e-314) = 3.1837e-314
-My function: cos(3.1837e-314) = 3.1837e-314
-Library    : cos(3.1837e-314) = 1
-My function: tan(3.1837e-314) = 3.1837e-314
-Library    : tan(3.1837e-314) = 3.1837e-314
-
-My function: sin(3.16202e-322) = 3.16202e-322
-Library    : sin(3.16202e-322) = 3.16202e-322
-My function: cos(3.16202e-322) = 3.16202e-322
-Library    : cos(3.16202e-322) = 1
-My function: tan(3.16202e-322) = 3.16202e-322
-Library    : tan(3.16202e-322) = 3.16202e-322
-
-My function: sin(0) = 0
-Library    : sin(0) = 0
-My function: cos(0) = 0
-Library    : cos(0) = 1
-My function: tan(0) = 0
-Library    : tan(0) = 0
-
-My function: sin(3.18454e-314) = 3.18454e-314
-Library    : sin(3.18454e-314) = 3.18454e-314
-My function: cos(3.18454e-314) = 3.18454e-314
-Library    : cos(3.18454e-314) = 1
-My function: tan(3.18454e-314) = 3.18454e-314
-Library    : tan(3.18454e-314) = 3.18454e-314
-
-My function: sin(1.2732e-313) = 1.2732e-313
-Library    : sin(1.2732e-313) = 1.2732e-313
-My function: cos(1.2732e-313) = 1.2732e-313
-Library    : cos(1.2732e-313) = 1
-My function: tan(1.2732e-313) = 1.2732e-313
-Library    : tan(1.2732e-313) = 1.2732e-313
-
-My function: sin(1.2732e-313) = 1.2732e-313
-Library    : sin(1.2732e-313) = 1.2732e-313
-My function: cos(1.2732e-313) = 1.2732e-313
-Library    : cos(1.2732e-313) = 1
-My function: tan(1.2732e-313) = 1.2732e-313
-Library    : tan(1.2732e-313) = 1.2732e-313
-
-My function: sin(2.12199e-314) = 2.12199e-314
-Library    : sin(2.12199e-314) = 2.12199e-314
-My function: cos(2.12199e-314) = 2.12199e-314
-Library    : cos(2.12199e-314) = 1
-My function: tan(2.12199e-314) = 2.12199e-314
-Library    : tan(2.12199e-314) = 2.12199e-314
-
-My function: sin(0) = 0
-Library    : sin(0) = 0
-My function: cos(0) = 0
-Library    : cos(0) = 1
-My function: tan(0) = 0
-Library    : tan(0) = 0
-
-My function: sin(3.18319e-314) = 3.18319e-314
-Library    : sin(3.18319e-314) = 3.18319e-314
-My function: cos(3.18319e-314) = 3.18319e-314
-Library    : cos(3.18319e-314) = 1
-My function: tan(3.18319e-314) = 3.18319e-314
-Library    : tan(3.18319e-314) = 3.18319e-314
-
-My function: sin(0) = 0
-Library    : sin(0) = 0
-My function: cos(0) = 0
-Library    : cos(0) = 1
-My function: tan(0) = 0
-Library    : tan(0) = 0
-
-My function: sin(2.12199e-314) = 2.12199e-314
-Library    : sin(2.12199e-314) = 2.12199e-314
-My function: cos(2.12199e-314) = 2.12199e-314
-Library    : cos(2.12199e-314) = 1
-My function: tan(2.12199e-314) = 2.12199e-314
-Library    : tan(2.12199e-314) = 2.12199e-314
 

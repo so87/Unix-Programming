@@ -36,11 +36,7 @@ int main()
 	}	
 	input.close();
 
-	// Get the size of the array
-	int size = sizeof(testData)/sizeof(*testData);	
-	cout << size << endl;
-
-	for(int i = 0; i < size; i++)
+	for(int i = 0; i < 19; i++)
 	{
 	  // Test sin	
 	  answer = mysin(testData[i]);

@@ -11,9 +11,8 @@ double mysin(double angle)
 {
 	if (abs(angle) <= 0.1)
 	{	
-		cout << "WARNING ANGLE LESS THAN .1" << endl;
 		return angle;
 	}
-		else
+	else
 		return utility(mysin(angle/3.));
 }
