@@ -1,0 +1,210 @@
+My function: sin(0) = 0
+Library    : sin(0) = 0
+My function: cos(0) = 0
+Library    : cos(0) = 1
+My function: tan(0) = 0
+Library    : tan(0) = 0
+
+My function: sin(0.174533) = 0.173745
+Library    : sin(0.174533) = 0.173648
+My function: cos(0.174533) = 0.984596
+Library    : cos(0.174533) = 0.984808
+My function: tan(0.174533) = 0.176464
+Library    : tan(0.174533) = 0.176327
+
+My function: sin(0.349066) = 0.342102
+Library    : sin(0.349066) = 0.34202
+My function: cos(0.349066) = 0.939137
+Library    : cos(0.349066) = 0.939693
+My function: tan(0.349066) = 0.364273
+Library    : tan(0.349066) = 0.36397
+
+My function: sin(0.523599) = 0.500256
+Library    : sin(0.523599) = 0.5
+My function: cos(0.523599) = 0.86497
+Library    : cos(0.523599) = 0.866025
+My function: tan(0.523599) = 0.578351
+Library    : tan(0.523599) = 0.57735
+
+My function: sin(0.698132) = 0.643325
+Library    : sin(0.698132) = 0.642788
+My function: cos(0.698132) = 0.76432
+Library    : cos(0.698132) = 0.766044
+My function: tan(0.698132) = 0.841697
+Library    : tan(0.698132) = 0.8391
+
+My function: sin(0.872665) = 0.766926
+Library    : sin(0.872665) = 0.766044
+My function: cos(0.872665) = 0.64022
+Library    : cos(0.872665) = 0.642788
+My function: tan(0.872665) = 1.19791
+Library    : tan(0.872665) = 1.19175
+
+My function: sin(1.0472) = 0.866157
+Library    : sin(1.0472) = 0.866025
+My function: cos(1.0472) = 0.496428
+Library    : cos(1.0472) = 0.5
+My function: tan(1.0472) = 1.74478
+Library    : tan(1.0472) = 1.73205
+
+My function: sin(1.22173) = 0.939835
+Library    : sin(1.22173) = 0.939693
+My function: cos(1.22173) = 0.3415
+Library    : cos(1.22173) = 0.34202
+My function: tan(1.22173) = 2.75208
+Library    : tan(1.22173) = 2.74748
+
+My function: sin(1.39626) = 0.984916
+Library    : sin(1.39626) = 0.984808
+My function: cos(1.39626) = 0.172994
+Library    : cos(1.39626) = 0.173648
+My function: tan(1.39626) = 5.69334
+Library    : tan(1.39626) = 5.67128
+
+My function: sin(1.5708) = 1
+Library    : sin(1.5708) = 1
+My function: cos(1.5708) = -0.000788175
+Library    : cos(1.5708) = 6.12323e-17
+My function: tan(1.5708) = -1268.75
+Library    : tan(1.5708) = 1.63312e+16
+
+My function: sin(1.74533) = 0.984596
+Library    : sin(1.74533) = 0.984808
+My function: cos(1.74533) = -0.174561
+Library    : cos(1.74533) = -0.173648
+My function: tan(1.74533) = -5.64041
+Library    : tan(1.74533) = -5.67128
+
+My function: sin(1.91986) = 0.939137
+Library    : sin(1.91986) = 0.939693
+My function: cos(1.91986) = -0.343036
+Library    : cos(1.91986) = -0.34202
+My function: tan(1.91986) = -2.73772
+Library    : tan(1.91986) = -2.74748
+
+My function: sin(2.0944) = 0.86497
+Library    : sin(2.0944) = 0.866025
+My function: cos(2.0944) = -0.501084
+Library    : cos(2.0944) = -0.5
+My function: tan(2.0944) = -1.7262
+Library    : tan(2.0944) = -1.73205
+
+My function: sin(2.26893) = 0.76432
+Library    : sin(2.26893) = 0.766044
+My function: cos(2.26893) = -0.64389
+Library    : cos(2.26893) = -0.642788
+My function: tan(2.26893) = -1.18704
+Library    : tan(2.26893) = -1.19175
+
+My function: sin(2.44346) = 0.64022
+Library    : sin(2.44346) = 0.642788
+My function: cos(2.44346) = -0.767101
+Library    : cos(2.44346) = -0.766044
+My function: tan(2.44346) = -0.834596
+Library    : tan(2.44346) = -0.8391
+
+My function: sin(2.61799) = 0.496428
+Library    : sin(2.61799) = 0.5
+My function: cos(2.61799) = -0.866959
+Library    : cos(2.61799) = -0.866025
+My function: tan(2.61799) = -0.572609
+Library    : tan(2.61799) = -0.57735
+
+My function: sin(2.79253) = 0.3415
+Library    : sin(2.79253) = 0.34202
+My function: cos(2.79253) = -0.940413
+Library    : cos(2.79253) = -0.939693
+My function: tan(2.79253) = -0.363138
+Library    : tan(2.79253) = -0.36397
+
+My function: sin(2.96706) = 0.172994
+Library    : sin(2.96706) = 0.173648
+My function: cos(2.96706) = -0.985218
+Library    : cos(2.96706) = -0.984808
+My function: tan(2.96706) = -0.17559
+Library    : tan(2.96706) = -0.176327
+
+My function: sin(3.14159) = -0.000788175
+Library    : sin(3.14159) = 1.22465e-16
+My function: cos(3.14159) = -0.999996
+Library    : cos(3.14159) = -1
+My function: tan(3.14159) = 0.000788177
+Library    : tan(3.14159) = -1.22465e-16
+
+My function: sin(3.1837e-314) = 3.1837e-314
+Library    : sin(3.1837e-314) = 3.1837e-314
+My function: cos(3.1837e-314) = 3.1837e-314
+Library    : cos(3.1837e-314) = 1
+My function: tan(3.1837e-314) = 3.1837e-314
+Library    : tan(3.1837e-314) = 3.1837e-314
+
+My function: sin(3.16202e-322) = 3.16202e-322
+Library    : sin(3.16202e-322) = 3.16202e-322
+My function: cos(3.16202e-322) = 3.16202e-322
+Library    : cos(3.16202e-322) = 1
+My function: tan(3.16202e-322) = 3.16202e-322
+Library    : tan(3.16202e-322) = 3.16202e-322
+
+My function: sin(0) = 0
+Library    : sin(0) = 0
+My function: cos(0) = 0
+Library    : cos(0) = 1
+My function: tan(0) = 0
+Library    : tan(0) = 0
+
+My function: sin(3.18454e-314) = 3.18454e-314
+Library    : sin(3.18454e-314) = 3.18454e-314
+My function: cos(3.18454e-314) = 3.18454e-314
+Library    : cos(3.18454e-314) = 1
+My function: tan(3.18454e-314) = 3.18454e-314
+Library    : tan(3.18454e-314) = 3.18454e-314
+
+My function: sin(1.2732e-313) = 1.2732e-313
+Library    : sin(1.2732e-313) = 1.2732e-313
+My function: cos(1.2732e-313) = 1.2732e-313
+Library    : cos(1.2732e-313) = 1
+My function: tan(1.2732e-313) = 1.2732e-313
+Library    : tan(1.2732e-313) = 1.2732e-313
+
+My function: sin(1.2732e-313) = 1.2732e-313
+Library    : sin(1.2732e-313) = 1.2732e-313
+My function: cos(1.2732e-313) = 1.2732e-313
+Library    : cos(1.2732e-313) = 1
+My function: tan(1.2732e-313) = 1.2732e-313
+Library    : tan(1.2732e-313) = 1.2732e-313
+
+My function: sin(2.12199e-314) = 2.12199e-314
+Library    : sin(2.12199e-314) = 2.12199e-314
+My function: cos(2.12199e-314) = 2.12199e-314
+Library    : cos(2.12199e-314) = 1
+My function: tan(2.12199e-314) = 2.12199e-314
+Library    : tan(2.12199e-314) = 2.12199e-314
+
+My function: sin(0) = 0
+Library    : sin(0) = 0
+My function: cos(0) = 0
+Library    : cos(0) = 1
+My function: tan(0) = 0
+Library    : tan(0) = 0
+
+My function: sin(3.18319e-314) = 3.18319e-314
+Library    : sin(3.18319e-314) = 3.18319e-314
+My function: cos(3.18319e-314) = 3.18319e-314
+Library    : cos(3.18319e-314) = 1
+My function: tan(3.18319e-314) = 3.18319e-314
+Library    : tan(3.18319e-314) = 3.18319e-314
+
+My function: sin(0) = 0
+Library    : sin(0) = 0
+My function: cos(0) = 0
+Library    : cos(0) = 1
+My function: tan(0) = 0
+Library    : tan(0) = 0
+
+My function: sin(2.12199e-314) = 2.12199e-314
+Library    : sin(2.12199e-314) = 2.12199e-314
+My function: cos(2.12199e-314) = 2.12199e-314
+Library    : cos(2.12199e-314) = 1
+My function: tan(2.12199e-314) = 2.12199e-314
+Library    : tan(2.12199e-314) = 2.12199e-314
+

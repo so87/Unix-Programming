@@ -1,0 +1,8 @@
+#!/bin/bash
+
+count=$#
+while [ $count -gt 0 ] 
+do
+  eval echo \${$count}
+  ((count--))
+done

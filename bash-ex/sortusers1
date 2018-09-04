@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then
+  echo "usage: sortuser1 SHELL" 1>&2
+  exit
+fi
+
+getent passwd | 
+#cat /etc/passwd
+while read line
+do
+  shell=$(echo $line | cut -d: -f7)
+  user=$(echo $line | cut -d: -f1)
+  if [ $1 = $shell ] 
+  then
+	echo $user
+  fi
+done
