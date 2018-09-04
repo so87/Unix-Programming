@@ -5,32 +5,56 @@
 
 using namespace std;
 
+double convertToRadians(double degrees)
+{
+	return degrees*3.141592/180;
+}
+
+
 int main()
 {
 	double angle, answer;
 	angle = 90;
 
 	// Read the test data from the file and store it
-	ofstream input;
-	double testData[30];
+	ifstream input;
+	double testData[30], temp;
 	input.open("test.dat");
-	int i = 0;
-	while(!input.eof())
+
+	// Make sure it can open
+	if (!input) 
 	{
-	 cout << testData[i];
+	  cerr << "Can't open file" << endl;
+		  exit(1);
+	}
+
+	// Read in the data
+	int i = 0;
+	while(input >> temp)
+	{
+	 testData[i] = convertToRadians(temp);
 	 i++; 
 	}	
 	input.close();
 
-	// Test sin
-	answer = mysin(angle);
-	cout << "sin(" << angle << ") = " << answer << " radians" << endl;
+	// Get the size of the array
+	int size = sizeof(testData)/sizeof(*testData);	
+	angle = convertToRadians(angle);
 
-	// Test cos
-	
+	for(int i = 0; i < size; i++)
+	{
+	  // Test sin	
+	  answer = mysin(testData[i]);
+	  cout << "sin(" << angle << ") = " << answer << endl;
 
-	// Test tan
+	  // Test cos
+	  answer = mycos(angle);
+	  cout << "cos(" << angle << ") = " << answer << endl;
 
+	  // Test tan
+	  answer = mytan(angle);
+	  cout << "tan(" << angle << ") = " << answer << endl;
+	}
 
 	return 0;
 }

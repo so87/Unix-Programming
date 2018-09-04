@@ -1,4 +1,5 @@
 #include <cmath>
+#include "mytrig.h"
 
 using namespace std;
 
