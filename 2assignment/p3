@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep "a" | grep "e" | grep "i" | grep "o" | grep "u"

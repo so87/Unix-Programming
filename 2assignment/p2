@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# at start, match any amount of characters that aren't a
+# find an a
+# match any amount of characters that aren't a till end
+grep -P '^[^a]*a[^a]*$'

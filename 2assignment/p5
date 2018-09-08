@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -P "^[^a]*a[^a]*$" | grep -P "^[^e]*e[^e]*$" | grep -P "^[^i]*i[^i]*$" | grep -P "^[^o]*o[^o]*$" | grep -P "^[^u]*u[^u]*$"
