@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    echo 'Usage: ./sfrm <arg1> <arg2> ...'
+    echo
+    echo 'Type "./sfrm help" to see commands'
+    exit 0
+fi
+
+if [[ "$1" = "help" ]] ; then
+    echo 'This tool safely romves files for you and places them in ~/.trash.  You can use the "unsfrm" tool to take your items out of the trash.'
+    echo 'sfrm works only with ordinary files (i.e., not directories, symbolic links, etc.)'
+fi
+
+# Loop over for however many arguments
+# existing file doesn't work
+
+# Make sure it is a file
+if [ -f $1 ]; then
+  if [ -e "~/.trash/$1" ]; then
+    echo 'Cannot move $2. $2 already exists in trash.'
+    read name
+    mv $1 ~/.trash/$name
+  else
+    mv $1 ~/.trash/$1
+  fi
+else
+  echo "Sorry this is not a regular file.  Can't move to trash"
+fi
+

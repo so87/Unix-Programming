@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    echo 'Usage: ./unsfrm <arg1> <arg2> ...'
+    echo
+    echo 'Type "./unsfrm help" to see commands'
+    exit 0
+fi
+
+if [[ "$1" = "help" ]] ; then
+    echo 'You can use the "unsfrm" tool to take your items out of the trash.'
+    echo 'unsfrm works only with ordinary files (i.e., not directories, symbolic links, etc.)'
+fi
+
+# Loop over for however many arguments
+# existing file doesn't work
+
+# Make sure it is a file
+if [ -f $1 ]; then
+
+fi
