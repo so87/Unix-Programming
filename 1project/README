@@ -1,0 +1,5 @@
+sfrm, unsfrm, and emptry trash passes all tests.
+
+Do not pipe my test plan to a file because I have silenced alot of the output to /dev/null
+
+My test plan also includes comments of things I tested for.  I could wrote unit test for everything, but that is a bit overkill for this assignment and how many points the test plan is worth.  It didn't seem like you wanted us to write unit tests for them, but rather just to explain them.

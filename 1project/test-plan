@@ -1,0 +1,75 @@
+#!/bin/bash
+# Create files for testing
+touch test1 test2 >/dev/null
+
+# Move a file
+./sfrm test1 >/dev/null
+actual=$(ls ~/.trash/)
+echo "Expected: test1"
+echo "Actual:   $actual" 
+
+# Move a file that doesn't exist
+actual=$(./sfrm test99)
+echo "Expected: Sorry this is not a regular file or doesn't exist.  Can't move to trash"
+echo "Actual:   $actual"
+
+# Move a file that exists in trash
+# This should tell you that a file already exists in trash, and to pick another name
+
+# Move a file in a directory
+mkdir foo >/dev/null
+touch foo/testfoo >/dev/null
+actual=$(./sfrm foo/testfoo)
+echo "Expected: Safely removed foo/testfoo to the trash"
+echo "Actual:   $actual"
+rm -rf foo >/dev/null
+
+# Move a file that exists in trash, suggest name that also exists in trash
+# Should tell you that the file already exists in trash, and to pick another name, if you pick a name that also exists it will keep prompting you for a new trash name
+
+# Move multiple files
+# This should move all of the files to the trash
+
+# Move multiple files, some don't exist, some are directories
+# It should remove the files that exist, tell you warnings on the ones that don't, and give you warnings on the directories that they aren't direcotries
+
+# Un remove a file
+touch ~/.trash/test1 >/dev/null
+./unsfrm test1 >/dev/null
+rm test1 test2 >/dev/null
+actual=$(ls .)
+echo "Expected: emptry trash"
+echo "results
+sfrm
+test-plan
+unsfrm"
+
+echo "Actual:   $actual"
+
+
+# Un remove a file that doesn't exist
+# You should get an error message that says that file is regular or doesn't exist
+
+# Un remove a directory
+# You should get an error message that you it isn't a regular file or doesn't exist
+
+# Un remove a file that exists in current directory
+# You should get a prompt that tells you that there is a file in your current directory with the same file you are trying to remove from trash
+
+# Un remove a file and overwrite it
+# You should be able to input "y" and it will overwrite the file in the current directory
+
+# Un remove a file that exists in current directory and pick another name that also exists
+# It should tell you that the file doesn't exsit and should also unremove the file that does exist
+
+# Un remove multiple files, some don't exist, some are direcotories
+# It should move all of the files that exist, and not move the directories or the files that don't exist in the trash
+
+
+# remove trash
+touch ~/.trash/test1 >/dev/null
+./emptytrash >/dev/null
+actual=$(ls ~/.trash/)
+echo "Expected: "
+echo "Actual:   $actual"
+

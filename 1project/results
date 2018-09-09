@@ -1,0 +1,19 @@
+
+echo "Actual:   $actual"ctual:   test1
+Expected: Sorry this is not a regular file or doesn't exist.  Can't move to trash
+Actual:   Sorry this is not a regular file or doesn't exist.  Can't move to trash
+Expected: Safely removed foo/testfoo to the trash
+Actual:   Safely removed foo/testfoo to the trash
+Expected: emptry trash
+results
+sfrm
+test-plan
+unsfrm
+Actual:   emptytrash
+results
+sfrm
+test-plan
+unsfrm
+Expected:
+Actual:
+

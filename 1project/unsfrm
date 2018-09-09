@@ -12,10 +12,43 @@ if [[ "$1" = "help" ]] ; then
     echo 'unsfrm works only with ordinary files (i.e., not directories, symbolic links, etc.)'
 fi
 
-# Loop over for however many arguments
-# existing file doesn't work
+for var in "$@"
+do
+  # strip off directory before file name
+  basename=`basename $var`
 
-# Make sure it is a file
-if [ -f $1 ]; then
+  # File exists in trash
+  if [ -f ~/.trash/$var ]; then
+    # File with same name exists in current directory 
+    if [ -f $basename ]; then
+	while : ; do
+          echo "Cannot move $var to current directory. $basename already exists in current directory."
+	  read -p "Enter(y) to overwrite or type new name to store under: " name
+	  # They want to overwrite file
+          if [[ "$name" = "y" ]]; then
+	    mv ~/.trash/$var .
+	    echo "Your file $basename was overwritten"
+	    break
+	  # Their input equals another file in their current directory
+          elif [ -f "$name" ]; then
+            echo "Sorry $name already exists in current directory" 
+	    echo 
+	  # New valid name to save
+          else
+            mv ~/.trash/$var $name 
+	    echo "$name moved successfully"
+	    break
+          fi 
+        done
+     # Move file into current directory
+     else
+       mv ~/.trash/$var .
+       echo "$basename moved successfully"
+     fi
+  # File doesn't exist in trash
+  else
+    echo "Sorry that file does not exist in trash"
+  fi
+  echo 
+done
 
-fi

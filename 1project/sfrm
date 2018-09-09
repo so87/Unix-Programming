@@ -14,17 +14,34 @@ fi
 
 # Loop over for however many arguments
 # existing file doesn't work
+for var in "$@"
+do
+  #strip off directory before file name
+  basename=`basename $var`
+  # Make sure it is a regular file
+  if [ -f $var ]; then
+    if [ -f ~/.trash/$basename ]; then
+      # Ensure user choses new name
+      while : ; do
+        echo "Cannot move $var. $basename already exists in trash."
+        read -p "New name to store under: " name
+        # User input is not equal to anything else in trash
+	if [ ! -f ~/.trash/$name ]; then
+		basename=$name
+		mv $var ~/.trash/$basename
+		echo "safely reomved $var to the trash as $basename"
+		break
+	fi
+	echo "Try again. $name also exsists in trash"
+	echo 
+      done
 
-# Make sure it is a file
-if [ -f $1 ]; then
-  if [ -e "~/.trash/$1" ]; then
-    echo 'Cannot move $2. $2 already exists in trash.'
-    read name
-    mv $1 ~/.trash/$name
-  else
-    mv $1 ~/.trash/$1
+    # Doesn't exist in trash safe to move in
+    else
+      mv $var ~/.trash/$basename
+      echo "Safely removed $var to the trash"  
   fi
-else
-  echo "Sorry this is not a regular file.  Can't move to trash"
-fi
-
+  else
+    echo "Sorry this is not a regular file or doesn't exist.  Can't move to trash"
+  fi
+done
