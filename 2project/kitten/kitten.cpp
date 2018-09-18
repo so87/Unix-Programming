@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	flags = 0;
 	
 	// keep going while there are arguments
-	while ((opt = getopt(argc, argv, "E:n:s:")) != -1) {
+	while ((opt = getopt(argc, argv, "Ens:")) != -1) {
 	  switch (opt) {
 	  // display $ at end of each line
 	  case 'E':
@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 	}
 
 	// make sure the file exists
-	if ((flags+1)==argc) {
+	if ((flags)>argc) {
 	  fprintf(stderr, "Expected argument after options\n");
 	  return 1;
 	}
-
+	
 	// open it
 	ifstream file;
-	file.open(argv[flags+1]);
+	file.open(argv[argc-1]);
 	if(!file.is_open()){
 	  cout << "Error: that file doesn't exist" << endl;
 	  return 1;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	  if(!skip){
 	    // number line
 	    if(nflag){
-	     cout << "	" << numLines << " "; 
+	     cout << "     " << numLines << " "; 
 	     numLines++;
 	    }
 	    // output regular line
