@@ -12,6 +12,8 @@
 #include <time.h>
 #include <locale.h>
 #include <unistd.h>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -49,42 +51,26 @@ int main(int argc, char * argv[])
   {
     while (ep = readdir (dp))
     {
-      // for the size of the files/folders
+      // structs that hold our data
       struct stat buf;
+      struct passwd perms;
+
+      // figure out the block size
       char* completePath = (char*)malloc(snprintf(NULL, 0, "%s/%s", dirname.c_str(), ep->d_name) + 1);  
       sprintf(completePath, "%s/%s", dirname.c_str(), ep->d_name);
       stat(completePath, &buf);
     
-      // fillout permissions 
-      if (ep->d_type == DT_DIR)
-      {
-        permissions[0]='d';
-      }
-      permissions[1] = (buf.st_mode && S_IRUSR) ? 'r':'-';
-      permissions[2] = (buf.st_mode && S_IWUSR) ? 'w':'-';
-      permissions[3] = (buf.st_mode && S_IXUSR) ? 'x':'-';
-      permissions[4] = (buf.st_mode && S_IRGRP) ? 'r':'-';
-      permissions[5] = (buf.st_mode && S_IWGRP) ? 'w':'-';
-      permissions[6] = (buf.st_mode && S_IXGRP) ? 'x':'-';
-      permissions[7] = (buf.st_mode && S_IROTH) ? 'r':'-';
-      permissions[8] = (buf.st_mode && S_IWOTH) ? 'w':'-';
-      permissions[9] = (buf.st_mode && S_IXOTH) ? 'x':'-';
-      permissions[10] = '\0';
-
-      // get file user permissions
-
+      // get file user permissions 
+      cout << geteuid() << endl;
 
       // date time Month Day hr:min
       char date[256];
-      struct tm time;
-      struct stat sbuf;
-      localtime_r(&sbuf.st_mtime, &time);
-      strftime(date, sizeof(date), "%F %T", &time); 
+      strcpy(date, ctime(&buf.st_mtime));
+      memmove(date, date+4, strlen(date+4)+4);
+      date[12] = '\0';
 
-
-      // permissions and date not working
-      // print out each line
-      printf("%s %zd %s %s \n", permissions, buf.st_size, date, ep->d_name);
+      // print out permissions, owner, group, id, size, date, and file name
+      printf("%-10s %-7zd %-13s %-20s \n", perms.pw_name, buf.st_size, date, ep->d_name);
       free(completePath);
     }
     // close it out

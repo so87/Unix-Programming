@@ -1,4 +1,4 @@
-// How many files can be opened: 256
+// How many files can be opened: 3200 including the 3
 // Confirm by typing "ulimit -n"
 #include <cmath>
 #include <iostream>
@@ -12,19 +12,20 @@ int main(int argc, char * argv[])
 	// open files
 	int canOpen = 1;
 	int numFiles = 0;
-	ifstream myFiles[1000];
+	fstream myFiles[4000];
 
 	while(canOpen)
 	{
 	// open self
-	for(int i = 0; i < 1000; i++){
+	for(int i = 0; i < 4000; i++){
 	  myFiles[i].open("count-opens/test.txt");
 
 	  // check if fail to open
-	  if(!myFiles[i]){
-	    break;
+	  if(!myFiles[i].is_open()){
+	    cout << "Max files: " << numFiles << endl;
+	    return 1;
 	  }
-	  else if(i >= 999)
+	  else if(i >= 3999)
 	    canOpen = false;
 	  // increment if success
 	  if (canOpen)
@@ -34,7 +35,7 @@ int main(int argc, char * argv[])
 	  cout << "Num files open: "<< numFiles << endl;		
 	  }
 	}
-	for(int index = 0; index < 1000; index++)
+	for(int index = 0; index < 2000; index++)
 	  myFiles[index].close();
 
 	return 0;
