@@ -18,12 +18,13 @@ int main(int argc, char * argv[])
 	{
 	// open self
 	for(int i = 0; i < 4000; i++){
-	  myFiles[i].open("count-opens/test.txt");
+	  myFiles[i].open("count-opensSrc/test.txt");
 
 	  // check if fail to open
 	  if(!myFiles[i].is_open()){
 	    cout << "Max files: " << numFiles << endl;
-	    return 1;
+	    canOpen=0;
+	    break;
 	  }
 	  else if(i >= 3999)
 	    canOpen = false;
@@ -37,6 +38,6 @@ int main(int argc, char * argv[])
 	}
 	for(int index = 0; index < 2000; index++)
 	  myFiles[index].close();
-
+	cout << "Plus 3 for OS and 1 for this file being open, so: " << numFiles+4 << endl;
 	return 0;
 }

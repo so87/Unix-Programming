@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
   }  
   else
   {
-	  cout << "Sorry this program only takes 0 or 1 arguments" << endl;
+    cout << "Sorry this program only takes 0 or 1 arguments" << endl;
     cout << "Usage: ./lsl dir or ./lsl" << endl;
     return 1;
   }
@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
       stat(completePath, &buf);
     
       // get file user permissions 
-      cout << geteuid() << endl;
+
 
       // date time Month Day hr:min
       char date[256];
@@ -70,7 +70,7 @@ int main(int argc, char * argv[])
       date[12] = '\0';
 
       // print out permissions, owner, group, id, size, date, and file name
-      printf("%-10s %-7zd %-13s %-20s \n", perms.pw_name, buf.st_size, date, ep->d_name);
+      printf("%-10s %-7zd %-11s %-20s \n", perms.pw_name, buf.st_size, date, ep->d_name);
       free(completePath);
     }
     // close it out

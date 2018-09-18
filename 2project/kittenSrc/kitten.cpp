@@ -41,7 +41,11 @@ int main(int argc, char *argv[])
 	}
 
 	// make sure the file exists
-	if ((flags)>argc) {
+	if (argc == 1){
+	  fprintf(stderr, "Usage: %s [-E] [-n] [-s] filename\n", argv[0]);
+	  return 1;
+	}
+	if (flags>argc) {
 	  fprintf(stderr, "Expected argument after options\n");
 	  return 1;
 	}
@@ -84,8 +88,9 @@ int main(int argc, char *argv[])
 
 	    // end line with $
 	    if(eflag){
-             cout << "$" << endl; 
+             cout << "$";
 	    }
+	    cout <<endl;
 	  }
 	}
 	file.close();
