@@ -1,4 +1,5 @@
 all: count_opens.o lsl.o kitten.o
+	chmod +x *
 	@echo Compiled all projects
 
 count_opens.o: count-opensSrc/count-opens.cpp

@@ -53,15 +53,16 @@ int main(int argc, char * argv[])
     {
       // structs that hold our data
       struct stat buf;
-      struct passwd perms;
+      struct passwd *permID, *permGP;
 
       // figure out the block size
       char* completePath = (char*)malloc(snprintf(NULL, 0, "%s/%s", dirname.c_str(), ep->d_name) + 1);  
       sprintf(completePath, "%s/%s", dirname.c_str(), ep->d_name);
-      stat(completePath, &buf);
+      lstat(completePath, &buf);
     
       // get file user permissions 
-
+	permID = getpwnam(buf.st_uid);
+	permGP = getpwuid(buf.st_gid);
 
       // date time Month Day hr:min
       char date[256];
@@ -70,7 +71,7 @@ int main(int argc, char * argv[])
       date[12] = '\0';
 
       // print out permissions, owner, group, id, size, date, and file name
-      printf("%-10s %-7zd %-11s %-20s \n", perms.pw_name, buf.st_size, date, ep->d_name);
+      printf("%-4s %-4s %-7zd %-11s %-20s \n", permID->pw_name,permGP->pw_gid, buf.st_size, date, ep->d_name);
       free(completePath);
     }
     // close it out
