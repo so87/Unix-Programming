@@ -26,7 +26,7 @@ void quiz(char direction, char sign, int num1, int num2);
 void updateScores(string name);
 
 // structure: speed, occurrence, right answers
-struct questions {double speed=1; double occurrence=1; int correct=0;};
+struct questions {int speed=100000; double occurrence=1; int correct=0;};
 
 // db
 struct hsRec{string name; string score;};
@@ -159,6 +159,7 @@ int generateNumb()
   return num;
 }
 
+
 // move the question across the screen and wait for correct answer
 void quiz(char direction, char sign, int num1, int num2)
 {
@@ -166,11 +167,46 @@ void quiz(char direction, char sign, int num1, int num2)
     // move it based on direction
     // move it so fast
     // when gets to edge set incorrect and break
-    cout << sign << endl;
-    printMiddle("Question: "+to_string(num1)+" "+sign+" "+to_string(num2)+" = ?" ,0);
+    string message = "Question: "+to_string(num1)+" "+sign+" "+to_string(num2)+" = ?";
+   
+    int done = 0;
+    int size = 0;
+    int row = 0;
+    // move across the screen until it hits a limit
+    int randomCol = 40 + (rand() % static_cast<int>(70 - 40 + 1));
+    int randomRow = 50 + (rand() % static_cast<int>(70 - 50 + 1));
+    clear();refresh();
+    while(!done){
+      clear();
+      // move across the screen horizontal
+      if (direction == 'H'){
+        move(randomRow-message.length(), size);
+        printw(message.c_str());
+	refresh();
+	usleep(questionRate.speed);
+	size++;
+	if(size == COLS){
+	  done = 1;
+	  clear();refresh();
+	}
+      } 
+      // move across the screen vertical
+      if(direction == 'V'){
+        move(size,randomCol-message.length());
+        printw(message.c_str());
+	cout << randomCol << endl;
+	refresh();
+	usleep(questionRate.speed);
+        size++;
+        if(size == LINES){
+          done = 1;
+          clear();refresh();
+        }
+      }
+    }
     attroff(A_BOLD| A_BLINK);
     cbreak();
-    printMiddle("Answer: ",1);
+    printMiddle("What was the answer: ",1);
     refresh();
     size_t sz;
     string stringAns = getConsoleInput();
@@ -222,7 +258,7 @@ void updateScores(string name)
 // increase the movespeed and rate of equation coming out
 void increaseQ()
 {
-   questionRate.speed = questionRate.speed + 1.5;
+   questionRate.speed = questionRate.speed -10000;
    questionRate.occurrence = questionRate.occurrence +1.5; 
    questionRate.correct = questionRate.correct +1;
 }
