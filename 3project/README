@@ -1,0 +1,16 @@
+This is by Simon James Owens 2018
+CS375 Unix System Programming
+Dr. Richardson
+Project 3
+
+
+What is this program?
+This project utlizes the screen and dbm to play a game.
+The game is you must solve math problems as they move across the screen.
+Enter your user name and then start playing.
+The top 5 results will be on the wall of fame.
+
+How to run?
+Just type "make"
+then run "math-game"
+

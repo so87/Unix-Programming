@@ -1,0 +1,6 @@
+# enter in a name that already exists
+
+# have a score that ties. make sure it doesn't remove a name from top
+
+# make sure game ends when input has left the screen
+
