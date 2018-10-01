@@ -5,7 +5,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <curses.h>
-
+#include <algorithm>
+#include <vector>
 
 #include <cstring>
 #include <iostream>
@@ -29,7 +30,7 @@ void updateScores(string name);
 struct questions {int speed=100000; double occurrence=1; int correct=0;};
 
 // db
-struct hsRec{string name; string score;};
+struct hsRec{string name; int score;};
 
 
 // defines
@@ -39,6 +40,9 @@ int correctAnswers = 1;
 
 int main()
 {
+    // seed rand for generatoring random questions later
+    srand(time(NULL));
+
     // get their user name
     string userName;
     userName = intro();  
@@ -244,15 +248,50 @@ void quiz(char direction, char sign, int num1, int num2)
     clear();
 }
 
+// because c++ can't conver ttypes and because DBM is terrible
+void add_to_scores(GDBM_FILE db, string nameS, string scoreS){
+    datum key, data; // Key and value (date and event).
+    char *name = new char[nameS.length() + 1];
+    strcpy(name, nameS.c_str());
+    char *score = new char[scoreS.length() +1];
+    strcpy(score, scoreS.c_str());
+
+    // add the user and their score to the database
+    key.dptr = name;
+    key.dsize = strlen(name);
+    data.dptr = score;
+    data.dsize = strlen(score);
+    // Storing!
+    gdbm_store(db, key, data, GDBM_REPLACE);
+    delete [] name;
+}
+
 // open the file and write the updated high score. make sure to sort
 void updateScores(string name)
 {
   // check if they made the top score
- 
+  // open the file
+    GDBM_FILE file;
+    datum current_key, current_data;
+    // check to see if this is the first time someone has played
+     if (FILE *file = fopen("highscores.dat", "r")) {
+	fclose(file);
+     }
+    // make an initial computer user for the database 
+     else{
+       	GDBM_FILE fileG; 	
+     	fileG = gdbm_open("highscores.dat", 512, GDBM_WRCREAT, 0666, 0);
+        add_to_scores(fileG, "Computer", "1");
+	gdbm_close(fileG);
+     }
 
-  // if they did update and move values around
+    file = gdbm_open("highscores.dat", 512, GDBM_WRCREAT, 0666, 0);
 
+    // get the places. the data file is already sorted
+    add_to_scores(file, name, to_string(questionRate.correct));
 
+    // close file
+    gdbm_close(file);
 }
 
 // increase the movespeed and rate of equation coming out
@@ -263,49 +302,54 @@ void increaseQ()
    questionRate.correct = questionRate.correct +1;
 }
 
+bool compareArray(const hsRec &a, const hsRec &b)
+{
+    return a.score < b.score;
+}
 
 // print out high score
 void printHighScores()
 {
     // open the file
     GDBM_FILE file;
-    datum key, data;
-    struct hsRec records;
-    file = gdbm_open("highscores.dat", 0, GDBM_READER, 0666, 0);
+    datum current_key, current_data;
+    file = gdbm_open("highscores.dat", 512, GDBM_WRCREAT, 0666, 0);
 
     // get the places. the data file is already sorted
-    string firstN,secondN,thirdN,forthN,fifthN;
-    string firstP,secondP,thirdP,forthP,fifthP;
-    
+    vector<struct hsRec> db;
+
     // key should be first entry
-    /*
-    key = gdbm_firstkey(file);
-    while (key.dptr !=NULL){
-	records = *(struct hsRec*)key.dptr;
-	data = gdbm_fetch(file,key);
-	records = *((struct hsRec*)(data.dptr));
-	firstN = records.name;
-	firstP = records.score;
-        free(data.dptr);	
-	key  = gdbm_nextkey(file,key);
+    int count = 0;
+    for(current_key = gdbm_firstkey(file);
+        current_key.dptr != NULL;
+        current_key = gdbm_nextkey(file, current_key))
+    {
+        // Fetch the data associated with that key.
+        current_data = gdbm_fetch(file, current_key);
+        if(current_data.dptr != NULL){
+            db.push_back(current_data.dptr,atoi(current_key.dptr));
+	    count++;
+	}
     }
-    */
+    // not working. comparision is not defined
+     
+    // find the 3 highest scores
+    sort(db.begin(), db.end(), compareArray); 
+    
 
     // print out to the screen
     printMiddle("High Scores!",0);
     printMiddle("-----------------------------------",1);
-    printMiddle("First  : "+firstN+" with "+firstP+ " points!",2);
-    printMiddle("Second : "+secondN+" with "+secondP+" points!",3);
-    printMiddle("Third  : "+thirdN+" with "+thirdP+ " points!",4);
-    printMiddle("Forth  : "+forthN+" with "+forthP+ " points!",5);
-    printMiddle("Fifth  : "+fifthN+" with "+fifthP+ " points!",6);
+    printMiddle("First  : "+db[0].name+" with "+to_string(db[0].score)+ " points!",2);
+    printMiddle("Second : "+db[1].name+" with "+to_string(db[1].score)+" points!",3);
+    printMiddle("Third  : "+db[2].name+" with "+to_string(db[2].score)+ " points!",4);
     printMiddle("-----------------------------------",7);
     printMiddle("Play again if you aren't scared....",15);
 
     // clean out screen
     echo();
     nocbreak();
-    refresh();sleep(5);
+    refresh();sleep(10);
     endwin();
 
 
