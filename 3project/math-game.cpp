@@ -304,7 +304,7 @@ void increaseQ()
 
 bool compareArray(const hsRec &a, const hsRec &b)
 {
-    return a.score < b.score;
+    return a.score > b.score;
 }
 
 // print out high score
@@ -316,7 +316,7 @@ void printHighScores()
     file = gdbm_open("highscores.dat", 512, GDBM_WRCREAT, 0666, 0);
 
     // get the places. the data file is already sorted
-    vector<struct hsRec> db;
+    struct hsRec db[1000];
 
     // key should be first entry
     int count = 0;
@@ -327,21 +327,21 @@ void printHighScores()
         // Fetch the data associated with that key.
         current_data = gdbm_fetch(file, current_key);
         if(current_data.dptr != NULL){
-            db.push_back(current_data.dptr,atoi(current_key.dptr));
+            db[count].score = atoi(current_data.dptr);
+	    db[count].name = current_key.dptr;
 	    count++;
 	}
     }
-    // not working. comparision is not defined
      
     // find the 3 highest scores
-    sort(db.begin(), db.end(), compareArray); 
+    sort(db, db+count, compareArray); 
     
 
     // print out to the screen
     printMiddle("High Scores!",0);
     printMiddle("-----------------------------------",1);
     printMiddle("First  : "+db[0].name+" with "+to_string(db[0].score)+ " points!",2);
-    printMiddle("Second : "+db[1].name+" with "+to_string(db[1].score)+" points!",3);
+    printMiddle("Second : "+db[1].name+" with "+to_string(db[1].score)+ " points!",3);
     printMiddle("Third  : "+db[2].name+" with "+to_string(db[2].score)+ " points!",4);
     printMiddle("-----------------------------------",7);
     printMiddle("Play again if you aren't scared....",15);
