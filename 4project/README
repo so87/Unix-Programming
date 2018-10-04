@@ -1,0 +1,13 @@
+This is by Simon James Owens 2018
+CS375 Unix System Programming
+Dr. Richardson
+Project 4
+
+
+What is this program?
+It expands and factors equations via the maxima library and interprocess communicatino.
+
+How to run?
+Just type "make"
+then run "expand" or "factor"
+
