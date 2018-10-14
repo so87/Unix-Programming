@@ -1,0 +1,15 @@
+quit();
+
+expand((x+3)^10);
+
+look for the new prompt to determine that maxima is done writing to the pipe
+
+create a pipe for sending maxima input
+create another pipe for receiving maxima output. Append to response string. look for (%i for when to stop. you do not stop/start maxima.
+
+create all the pipes before you fork the process. use same pipes. the issue is trying to close all of your pipe ends. use the dup routine to duplicate
+just have a child. you are constantly interacting and communicating with the child.
+
+you receive a quit command from user, it sends to maxima, and wait till maxima shuts down
+
+
