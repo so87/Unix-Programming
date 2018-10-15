@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
    if(userInput == "quit")
      break;
    cout << userInput << " = ";
-
+   
    //write their input to maxima
    userInput = "factor("+userInput+");\n";
    int bytes = userInput.length();
