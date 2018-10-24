@@ -1,0 +1,2 @@
+1. get message queues working
+2. figure out why shared memory is needed if we are doing message queues
