@@ -15,12 +15,21 @@
 #include <sys/types.h>
 #include <mqueue.h>
 #include <ctime>
+#include <sys/mman.h>
+#include <sys/wait.h>
 
 
 using namespace std;
 
 // IPC message
 #define PMODE 0666
+
+// shared memory
+#define TEXT_SZ 128
+struct shared_use_st {
+    int written_by_rev;
+    char some_text[TEXT_SZ];
+};
 
 int main(int argc, char * argv[])
 {
@@ -32,7 +41,9 @@ int main(int argc, char * argv[])
    }
 
   // create semaphore
+  sem_t *sem_p;
   char const *sem_name = "/cs";
+  sem_p = sem_open(sem_name, O_CREAT | O_EXCL, 0600, 1);
 
   // create IPC message queue
   int i;
@@ -51,6 +62,29 @@ int main(int argc, char * argv[])
   num_bytes_to_send = 2;
   priority_of_msg = 1;
 
+  // created shared memory segment
+  int running = 1; 
+  void *shared_memory = (void *)0;
+  struct shared_use_st *shared_stuff;
+  int shmfd;
+  char const *shm_name = "/unix";
+  shmfd = shm_open(shm_name, O_RDWR | O_CREAT | O_EXCL, 0666);
+  // Set the size of the memory object
+  if(ftruncate(shmfd, sizeof(struct shared_use_st)) == -1) {
+    perror("ftruncate");
+    exit(1);
+  }
+  // Map the object into our address space.
+  shared_memory = mmap(NULL, sizeof(struct shared_use_st),PROT_READ | PROT_WRITE, MAP_SHARED, shmfd, 0);
+  if(shared_memory == MAP_FAILED) {
+    perror("mmap");
+    exit(1);
+  }
+  close(shmfd);
+  shared_stuff = (struct shared_use_st *)shared_memory;
+  shared_stuff->written_by_rev = 0;
+
+
   // create children
   int pid1,pid2,pidParent;
   int status;
@@ -66,12 +100,7 @@ int main(int argc, char * argv[])
 
     // clt+d was pressed end the program
     if (userInput.length() == 0){
-    // destroy the message queue
-    if (mq_close(mqfd) == -1)
-      perror("mq_close failure on mqfd");
-    if (mq_unlink("myipc") == -1)
-      perror("mq_unlink failure in test_ipc");
-      return 1;
+      break;
     }
 
     // Generate message to send to reverse
@@ -86,11 +115,11 @@ int main(int argc, char * argv[])
       if(pid2==0){
         // reverse
 	string message_queue_name = "myipc";
-        execl("reverse", "reverse",&sem_name, message_queue_name.c_str(), (char *)0);
+        execl("reverse", "reverse",&sem_name, shm_name, message_queue_name.c_str(), (char *)0);
       }
       else{
         // upper
-        execl("upper", "upper",&sem_name, message, (char *)0);
+        execl("upper", "upper",&sem_name, shm_name, (char *)0);
       }
     }
     
@@ -98,14 +127,25 @@ int main(int argc, char * argv[])
     else{
       wait(&status);
       // look at shared memory and print the output
+      sem_wait(sem_p);
+      strncpy(message, shared_stuff->some_text, TEXT_SZ); 
       cout << endl;
       cout << "Message: " << message << endl;
+      sem_post(sem_p);
     }
   }
   // close IPC
+  // destroy the message queue
   if (mq_close(mqfd) == -1)
     perror("mq_close failure on mqfd");
-
+  if (mq_unlink("myipc") == -1)
+    perror("mq_unlink failure in test_ipc");
+  // destroy shared memory
+  munmap(shared_memory, sizeof(struct shared_use_st));
+  shm_unlink("/test1");
+  //destroy the semaphore
+  sem_close(sem_p);
+  sem_unlink(sem_name);  
 
   return 0;
 }
