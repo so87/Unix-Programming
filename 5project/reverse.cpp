@@ -10,16 +10,16 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <mqueue.h>
+#include <errno.h>
 
+#define PMODE 0666
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-  //int key = atoi(argv[2]);
-  string userInput = argv[2];
-  char message[256];
-  strcpy(message,userInput.c_str());
+  char message[128];
 
   // acquire the semaphore
   sem_t *sem_p;
@@ -28,9 +28,17 @@ int main(int argc, char* argv[])
   sem_wait(sem_p);
 
   // receive message
-  //int msgid = msgget(key, 0666 | IPC_CREAT);
-  //msgrcv(msgid, &message, sizeof(message), 1, 0);
-  
+  int i;
+  mqd_t mqfd;
+  struct mq_attr attr;
+  int open_flags = 0;
+  attr.mq_maxmsg = 128;
+  attr.mq_msgsize = 128;
+  attr.mq_flags   = 0;
+  open_flags = O_RDONLY|O_CREAT;
+  mqfd = mq_open(argv[2],open_flags,PMODE,&attr);
+  mq_receive(mqfd,message,sizeof(message),NULL);
+
   // reverse message
   int n = strlen(message); 
   for(int i = 0; i < n/2; i++)
@@ -38,8 +46,6 @@ int main(int argc, char* argv[])
   message[n] = '\0';
 
   cout << message << endl;
-  // send message
-  //msgsnd(msgid, &message, sizeof(message), 0);
   
   // release the semaphore
   sem_post(sem_p);

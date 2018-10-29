@@ -20,12 +20,7 @@
 using namespace std;
 
 // IPC message
-const int MAXLEN = 512;
-
-enum msgtype { SRVMSG=1, CLIMSG };
-
-struct msg { long type; char data[MAXLEN]; };
-
+#define PMODE 0666
 
 int main(int argc, char * argv[])
 {
@@ -40,19 +35,22 @@ int main(int argc, char * argv[])
   char const *sem_name = "/cs";
 
   // create IPC message queue
-  msg srvmsg, rcdmsg;
-  string srvstr, rcdstr;
-  time_t curtime;
-  srvmsg.type = SRVMSG;
-  string stoc("/myq_stoc"), ctos("/myq_ctos");
+  int i;
+  int MQstatus = 0;
+  mqd_t mqfd;
   struct mq_attr attr;
-  attr.mq_flags = 0;
-  attr.mq_maxmsg = 1;
-  attr.mq_msgsize = sizeof(srvmsg);
-  mqd_t stoc_id = mq_open(stoc.c_str(),O_CREAT | O_EXCL | O_WRONLY,0600,&attr);
-  attr.mq_msgsize = sizeof(rcdmsg);
-  mqd_t ctos_id = mq_open(ctos.c_str(),O_CREAT | O_EXCL | O_RDONLY,0600,&attr); 
-  
+  int open_flags = 0;
+  int num_bytes_to_send;
+  int priority_of_msg;
+  attr.mq_maxmsg = 128;
+  attr.mq_msgsize = 128;
+  attr.mq_flags   = 0;
+  open_flags = O_WRONLY|O_CREAT;
+  string message_queue_name = "myipc";
+  mqfd = mq_open(message_queue_name.c_str(),open_flags,PMODE,&attr);
+  num_bytes_to_send = 2;
+  priority_of_msg = 1;
+
   // create children
   int pid1,pid2,pidParent;
   int status;
@@ -63,15 +61,22 @@ int main(int argc, char * argv[])
     string userInput = "";
     cout << "> "; 
     cin >> userInput;
-    char message[256];
+    char message[128];
     strcpy(message,userInput.c_str());
 
     // clt+d was pressed end the program
-    if (userInput.length() == 0)
+    if (userInput.length() == 0){
+    // destroy the message queue
+    if (mq_close(mqfd) == -1)
+      perror("mq_close failure on mqfd");
+    if (mq_unlink("myipc") == -1)
+      perror("mq_unlink failure in test_ipc");
       return 1;
+    }
 
-    // send message to IPC
-    
+    // Generate message to send to reverse
+    message[128-1] = '\0';
+    mq_send(mqfd,message,sizeof(message),priority_of_msg); 
 
     // children manipulate the strings 
     pid1 = fork();
@@ -80,23 +85,27 @@ int main(int argc, char * argv[])
       pid2 = fork();
       if(pid2==0){
         // reverse
-        execl("reverse", "reverse",&sem_name, message, (char *)0);
+	string message_queue_name = "myipc";
+        execl("reverse", "reverse",&sem_name, message_queue_name.c_str(), (char *)0);
       }
       else{
         // upper
         execl("upper", "upper",&sem_name, message, (char *)0);
       }
     }
+    
     // wait for children to finish manipulating message
     else{
       wait(&status);
-      // look at shared memory to see the resulting string
-      
-      
+      // look at shared memory and print the output
       cout << endl;
       cout << "Message: " << message << endl;
     }
   }
+  // close IPC
+  if (mq_close(mqfd) == -1)
+    perror("mq_close failure on mqfd");
+
 
   return 0;
 }
