@@ -12,14 +12,20 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <semaphore.h>
+#include <sys/types.h>
+#include <mqueue.h>
+#include <ctime>
+
 
 using namespace std;
 
 // IPC message
-struct mesg_buffer { 
-    long mesg_type; 
-    char mesg_text[256]; 
-} message;
+const int MAXLEN = 512;
+
+enum msgtype { SRVMSG=1, CLIMSG };
+
+struct msg { long type; char data[MAXLEN]; };
+
 
 int main(int argc, char * argv[])
 {
@@ -34,14 +40,22 @@ int main(int argc, char * argv[])
   char const *sem_name = "/cs";
 
   // create IPC message queue
-  key_t key;
-  int msgid;
-  int status;
-  key = ftok("progfile", 65);
-  msgid = msgget(key, 0666 | IPC_CREAT);
+  msg srvmsg, rcdmsg;
+  string srvstr, rcdstr;
+  time_t curtime;
+  srvmsg.type = SRVMSG;
+  string stoc("/myq_stoc"), ctos("/myq_ctos");
+  struct mq_attr attr;
+  attr.mq_flags = 0;
+  attr.mq_maxmsg = 1;
+  attr.mq_msgsize = sizeof(srvmsg);
+  mqd_t stoc_id = mq_open(stoc.c_str(),O_CREAT | O_EXCL | O_WRONLY,0600,&attr);
+  attr.mq_msgsize = sizeof(rcdmsg);
+  mqd_t ctos_id = mq_open(ctos.c_str(),O_CREAT | O_EXCL | O_RDONLY,0600,&attr); 
   
   // create children
   int pid1,pid2,pidParent;
+  int status;
 
   // loop until clt+D
   while(1){ 
@@ -49,14 +63,15 @@ int main(int argc, char * argv[])
     string userInput = "";
     cout << "> "; 
     cin >> userInput;
+    char message[256];
+    strcpy(message,userInput.c_str());
 
     // clt+d was pressed end the program
     if (userInput.length() == 0)
       return 1;
 
     // send message to IPC
-    strcpy(message.mesg_text,userInput.c_str());
-    msgsnd(msgid, &message, sizeof(message),0); 
+    
 
     // children manipulate the strings 
     pid1 = fork();
@@ -65,25 +80,23 @@ int main(int argc, char * argv[])
       pid2 = fork();
       if(pid2==0){
         // reverse
-        execl("reverse", "reverse",&sem_name, message.mesg_text, (char *)0);
+        execl("reverse", "reverse",&sem_name, message, (char *)0);
       }
       else{
         // upper
-        execl("upper", "upper",&sem_name, message.mesg_text, (char *)0);
+        execl("upper", "upper",&sem_name, message, (char *)0);
       }
     }
     // wait for children to finish manipulating message
     else{
       wait(&status);
-      // msgrcv to receive message
-      msgrcv(msgid, &message, sizeof(message), 1, 0);
+      // look at shared memory to see the resulting string
+      
+      
       cout << endl;
-      cout << "Message: " << message.mesg_text << endl;
+      cout << "Message: " << message << endl;
     }
   }
-
-  // kill the message queue
-  msgctl(msgid, IPC_RMID, NULL);
 
   return 0;
 }

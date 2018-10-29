@@ -1,0 +1,3 @@
+there is a subprocess module in the os library. read/send to stdin and out
+
+"process" is the windows/unix accepted
