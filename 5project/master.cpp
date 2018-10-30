@@ -25,7 +25,7 @@ using namespace std;
 #define PMODE 0666
 
 // shared memory
-#define TEXT_SZ 128
+#define TEXT_SZ 256
 struct shared_use_st {
     int written_by_rev;
     char some_text[TEXT_SZ];
@@ -53,8 +53,8 @@ int main(int argc, char * argv[])
   int open_flags = 0;
   int num_bytes_to_send;
   int priority_of_msg;
-  attr.mq_maxmsg = 128;
-  attr.mq_msgsize = 128;
+  attr.mq_maxmsg = 256;
+  attr.mq_msgsize = 256;
   attr.mq_flags   = 0;
   open_flags = O_WRONLY|O_CREAT;
   string message_queue_name = "myipc";
@@ -67,7 +67,7 @@ int main(int argc, char * argv[])
   void *shared_memory = (void *)0;
   struct shared_use_st *shared_stuff;
   int shmfd;
-  char const *shm_name = "/unixproject5simon";
+  char const *shm_name = "/unixproject5simonowens";
   shmfd = shm_open(shm_name, O_RDWR | O_CREAT | O_EXCL, 0666);
   // Set the size of the memory object
   if(ftruncate(shmfd, sizeof(struct shared_use_st)) == -1) {
@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
     string userInput = "";
     cout << "> "; 
     getline(cin, userInput);
-    char message[128];
+    char message[256];
     strcpy(message,userInput.c_str());
 
     // clt+d was pressed end the program
@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
     }
 
     // Generate message to send to reverse
-    message[128-1] = '\0';
+    message[256-1] = '\0';
     mq_send(mqfd,message,sizeof(message),priority_of_msg); 
 
     // children manipulate the strings 

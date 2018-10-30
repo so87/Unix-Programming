@@ -13,7 +13,7 @@
 #include <string.h>
 
 
-#define TEXT_SZ 128
+#define TEXT_SZ 256
 struct shared_use_st {
     int written_by_rev;
     char some_text[TEXT_SZ];
@@ -24,7 +24,7 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-  char message[128];
+  char message[256];
 
   // create shared memory space
   void *shared_memory = (void *)0;
@@ -71,7 +71,7 @@ int main(int argc, char * argv[])
   locale loc;
   for (size_t i=0; i <strlen(message); ++i)
     message[i] = toupper(message[i],loc);
-  message[127] = '\0';
+  message[256-1] = '\0';
 
   // write to shared memory
   strncpy(shared_stuff->some_text, message, TEXT_SZ); 

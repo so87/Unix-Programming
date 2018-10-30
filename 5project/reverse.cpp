@@ -18,7 +18,7 @@
 #define PMODE 0666
 
 // shared memory
-#define TEXT_SZ 128
+#define TEXT_SZ 256
 struct shared_use_st {
     int written_by_rev;
     char some_text[TEXT_SZ];
@@ -29,7 +29,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-  char message[128];
+  char message[256];
 
   // create shared memory space
   int running = 1;
@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
   mqd_t mqfd;
   struct mq_attr attr;
   int open_flags = 0;
-  attr.mq_maxmsg = 128;
-  attr.mq_msgsize = 128;
+  attr.mq_maxmsg = 256;
+  attr.mq_msgsize = 256;
   attr.mq_flags   = 0;
   open_flags = O_RDONLY|O_CREAT;
   mqfd = mq_open(argv[3],open_flags,PMODE,&attr);
