@@ -67,7 +67,7 @@ int main(int argc, char * argv[])
   void *shared_memory = (void *)0;
   struct shared_use_st *shared_stuff;
   int shmfd;
-  char const *shm_name = "/unix";
+  char const *shm_name = "/unixproject5simon";
   shmfd = shm_open(shm_name, O_RDWR | O_CREAT | O_EXCL, 0666);
   // Set the size of the memory object
   if(ftruncate(shmfd, sizeof(struct shared_use_st)) == -1) {
@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
     // get input from user
     string userInput = "";
     cout << "> "; 
-    cin >> userInput;
+    getline(cin, userInput);
     char message[128];
     strcpy(message,userInput.c_str());
 

@@ -53,15 +53,15 @@ int main(int argc, char * argv[])
   // check to see if reverse has written to it yet 
   while(1){
   sem_wait(sem_p);
-  if(shared_stuff->written_by_rev == 1)
+  if(shared_stuff->written_by_rev == 1){
+    sem_post(sem_p);
     break;
+  }
   else{
     sem_post(sem_p);
     sleep(1);
-    cout << "stuck in upper sem loop" << endl;
   }
   }
-  cout << "upper trying to write to get semaphore to read" << endl;
 
   sem_wait(sem_p); 
   // get string from shared memory
@@ -74,7 +74,6 @@ int main(int argc, char * argv[])
   message[127] = '\0';
 
   // write to shared memory
-  cout << "upper trying to write to shared memory" << endl;
   strncpy(shared_stuff->some_text, message, TEXT_SZ); 
 
   // change back the rev written for next time
