@@ -95,7 +95,7 @@ int main()
             (fd_set *)0, (struct timeval *) 0);
         if(result < 1) {
             cerr << "server: error in select call" << endl;
-            exit(1);
+            return 1;
         }
 
         //  Once we know we've got activity, we find which descriptor 
@@ -147,6 +147,7 @@ int main()
             }
         }
     }
+  return 0;
 }
 
 void shout(string &in) {
@@ -155,13 +156,11 @@ void shout(string &in) {
 
 void e_error(const char *m)
 {
-  cerr << m << ": " << strerror(errno) << endl;
-  exit(errno);
+  cerr << m << ": " << endl;
 }
 
 void ee_error(const char *m, int errcode)
 {
-  cerr << m << ": " << gai_strerror(errcode) << endl;
-  exit(errcode);
+  cerr << m << ": " << endl;
 }
 

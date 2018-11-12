@@ -7,3 +7,4 @@ main.o:
 	g++ shoutd.cpp -o shoutd
 clean: 
 	rm -f shout shoutd
+	rm -f shout.exe shoutd.exe
