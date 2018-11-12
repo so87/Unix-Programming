@@ -7,14 +7,15 @@
 
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <netdb.h>
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
     int sockfd, port, len;
-    struct sockaddr_in address;
-    struct sockaddr *p_addr = (struct sockaddr *)&address;
+    struct addrinfo h, *r;
     int result, n;
     string input, response;
     char buffer[80];
@@ -24,19 +25,14 @@ int main(int argc, char *argv[])
        exit(1);
     }
 
-    port = atoi(argv[2]);
+    getaddrinfo(argv[1], argv[2], NULL, &r);
 
-    // Create a socket for the client.
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    // Create the server socket address
-    address.sin_family = AF_INET;
-    address.sin_port = htons(port);
-    address.sin_addr.s_addr = inet_addr(argv[1]);
-    len = sizeof(address);
+    // Create socket for clietn
+    sockfd = socket(r->ai_family, r->ai_socktype, r->ai_protocol);
 
     // Connect our socket to the server's socket.  */
-    result = connect(sockfd, p_addr, len);
+    result = connect(sockfd, r->ai_addr, r->ai_addrlen);
+
     if(result == -1) {
         cerr << "oops: client1";
         exit(1);
