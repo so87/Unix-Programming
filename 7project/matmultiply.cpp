@@ -1,40 +1,110 @@
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
-int max;
+using namespace std;
 
-// You can try it with and without volatile keyword
-// value will be incorrect regardless
-volatile int counter = 0; // shared global variable
+void multS(int** a, int** b,int size);                   
+void multM(int** a, int** b,int size);
 
-void *mythread(void *arg) {
-    char *letter = arg;
-    int i; // stack (private per thread) 
-    printf("%s: begin [addr of i: %p]\n", letter, &i);
-    for (i = 0; i < max; i++) {
-	    counter = counter + 1; // shared: only one
-    }
-    printf("%s: done\n", letter);
-    return NULL;
-}
-                                                                             
 int main(int argc, char *argv[]) {                    
-    if (argc != 2) {
-	fprintf(stderr, "usage: main-first <loopcount>\n");
+    if (argc != 3) {
+	fprintf(stderr, "usage: s|m matrice_size \n");
 	exit(1);
     }
-    max = atoi(argv[1]);
+    
+    string choice = argv[1];
+    int size = atoi(argv[2]);
+    srand(time(NULL));
 
-    pthread_t p1, p2;
-    printf("main: begin [counter = %d] [%x]\n", counter, 
-	   &counter);
-    pthread_create(&p1, NULL, mythread, "A"); 
-    pthread_create(&p2, NULL, mythread, "B");
-    // join waits for the threads to finish
-    pthread_join(p1, NULL); 
-    pthread_join(p2, NULL); 
-    printf("main: done\n [counter: %d]\n [should: %d]\n", 
-	   counter, max*2);
+    // allocate those matrices on the heap
+    int** a = new int*[size];
+    for(int i = 0; i < size; ++i){
+      a[i] = new int[size];
+      for(int j = 0; j < size; ++j)
+        a[i][j] = rand() % 10;
+    }
+
+    int** b = new int*[size];
+    for(int i = 0; i < size; ++i){
+      b[i] = new int[size];
+      for(int j = 0; j < size; ++j)
+        b[i][j] = rand() % 10;
+    }
+
+    // run with a single or multiple thread
+    cout << "__________" << endl;
+    if(choice == "m"){
+      multM(a, b, size);
+    }
+    else{ 
+      multS(a, b, size);
+    }
+    cout << endl << "___________" << endl;
+
+
+    // delete the heap
+    for(int i = 0; i < size; ++i) {
+      delete [] a[i];
+    }
+    delete [] a; 
+    for(int i = 0; i < size; ++i) {
+      delete [] b[i];
+    }
+    delete [] b;
+
+    
     return 0;
+}
+
+
+// ensure to print out first/last element
+void multS(int** A, int** B,int size) {
+    int C[size][size];
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            int num = 0;
+            for (int k = 0; k < size; k++) {
+                num += A[i][k] * B[k][j];
+            }
+
+            C[i][j] = num;
+	    if(i <= 1 && j <= 1)
+              std::cout << num << " ";
+	    if(i == 2 && j == 2)
+	      std::cout << "    ... ";
+
+	    if(i+1==size && j+1 == size)
+	      std::cout << endl << "        "<< num << " ";
+        }
+	if(i <= 1)
+          std::cout << std::endl;
+    }
+}
+
+// ensure to print out first/last element
+void multM(int** A, int** B, int size) {
+    int C[size][size];
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            int num = 0;
+            for (int k = 0; k < size; k++) {
+                num += A[i][k] * B[k][j];
+            }
+
+            C[i][j] = num;
+            if(i <= 1 && j <= 1)
+              std::cout << num << " ";
+            if(i == 2 && j == 2)
+              std::cout << "    ... ";
+
+            if(i+1==size && j+1 == size)
+              std::cout << endl << "        "<< num << " ";
+        }
+        if(i <= 1)
+          std::cout << std::endl;
+    }
 }
