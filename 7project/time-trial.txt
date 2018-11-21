@@ -1,0 +1,30 @@
+
+$ time ./matmultiply.exe s 1000 > time-trial.txt
+
+real    0m4.168s
+user    0m4.125s
+sys     0m0.030s
+
+__________
+Running with one thread
+20696 21015 
+19783 19493 
+    ... 
+        20355 
+___________
+
+
+
+$ time ./matmultiply.exe m 1000 >> time-trial.txt
+
+
+real    4m35.837s
+user    2m39.906s
+sys     5m15.781s
+
+__________
+Running with multiple threads
+20979 20918 
+19680 19979
+    ...    
+
