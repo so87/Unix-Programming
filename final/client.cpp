@@ -35,15 +35,17 @@ int main(int argc, char *argv[])
         cerr << "the client failed to connect to the server" << endl;
         return 1;
     }
-    string userInput, response;
+    string userInput;
     static char buffer[256];
     int buflen = sizeof(buffer);
 
-    string input, output;
     cout << "Connected to server!" << endl;
-    cout<<"Please enter your name: ";
+    
+    userInput = "READY";
+    write(sockfd, userInput.c_str(), userInput.length()+1);
+    int ready = 0;
 
-    while(cin>>userInput) {
+    while(1) {
       // clt+d was pressed end the program
       if (userInput.length() == 0){
         cout << "exiting" << endl;
@@ -53,9 +55,37 @@ int main(int argc, char *argv[])
 	cout << "exiting" << endl;
 	break;
       }
-      write(sockfd, userInput.c_str(), userInput.length()+1);
       nread = read(sockfd, buffer, buflen);
-      cout << buffer << endl;
+      cout << buffer <<endl;
+      
+      if(strcmp(buffer,"STOP")==0){
+	// read the scoreboard from the server
+	nread = read(sockfd, buffer, buflen);
+	cout << "Programing stopping because the other player left" << endl;
+        break;
+      }
+      else if(strcmp(buffer,"GO")==0)
+        ready = 1;
+
+      // playing the game with the computer
+      if(ready){
+        cout << "Starting to play the game" << endl;
+	while(1){
+	  // enter in your move
+	  do{
+	    cout << "Enter R,P,S: ";
+	    cin >> userInput;
+	  }while((strcmp(userInput.c_str(), "R")==0) || (strcmp(userInput.c_str(), "P")==0) || (strcmp(userInput.c_str(), "S")==0));
+	 // write move to server
+         write(sockfd, userInput.c_str(), userInput.length()+1);
+
+	 // listen for their results
+         nread = read(sockfd, buffer, buflen);
+
+	 // decide if we want to quit or not
+         cout << buffer << endl;
+	}
+      }
   }  
   
   close(sockfd);

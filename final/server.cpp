@@ -15,7 +15,7 @@ using namespace std;
 int main()
 {
     // inclass example setup
-    int s_sfd, c_sfd;
+    int s_sfd;
     struct sockaddr s_addr, c_addr;
     socklen_t s_len, c_len;
     struct addrinfo hints, *res;
@@ -73,7 +73,11 @@ int main()
     FD_ZERO(&readfds);
     FD_SET(s_sfd, &readfds);
 
-    int maxc = 4;    
+    int maxc = 4;
+    int p1_fd = 0;
+    int p2_fd = 0;
+    int connected = 0;
+
     while(1) {
         int fd;
         int nread;
@@ -85,26 +89,46 @@ int main()
             cerr << "error in select call" << endl;
             return 1;
         }
-
         for(fd = 0; fd < maxc; fd++) {
             if(FD_ISSET(fd,&testfds)) {
+		// create client file descriptors
                 if(fd == s_sfd) {
                     c_len = sizeof(c_addr);
-                    c_sfd = accept(s_sfd, &c_addr, &c_len);
-                    FD_SET(c_sfd, &readfds);
-                    cout << "client using fd " << c_sfd << endl;
-   		    maxc++;
-                }
+                    if(connected==0){
+		      p1_fd = accept(s_sfd, &c_addr, &c_len);
+                      FD_SET(p1_fd, &readfds);
+                      cout << "player 1 using fd " << p1_fd << endl;
+		      connected += 1;
+   		      maxc++;
+		    }
+		    else if(connected==1){
+                      p2_fd = accept(s_sfd, &c_addr, &c_len);
+                      FD_SET(p2_fd, &readfds);
+                      cout << "player 2 using fd " << p2_fd << endl;
+                      connected += 1;
+                      maxc++;
+		      // time to play the game both are connected
+		      input = "GO";
+		      write(p1_fd, input.c_str(), input.length()+1);
+                      write(p2_fd, input.c_str(), input.length()+1); 
+                    }
+                }	
                 else {
 		  // flush the input and start over
 		  input.clear();
 		  while(true) {
                     nread = read(fd, buffer, buflen);
-                    if(nread == 0) {
-                        close(fd);
-			// this seems like magic
-                        FD_CLR(fd, &readfds);
-                        cout << "client releasing fd " << fd << endl;
+                    if((nread == 0 ) || (buffer == "STOP")){
+			input = "STOP";
+			write(p1_fd,input.c_str(), input.length()+1);
+			write(p2_fd,input.c_str(), input.length()+1);
+			// display game info
+			close(p1_fd);
+			close(p2_fd);
+			FD_CLR(p1_fd, &readfds);
+                        FD_CLR(p2_fd, &readfds);
+			connected = 0;
+			maxc--;
 			maxc--;
 			break;
                     }
@@ -116,9 +140,24 @@ int main()
 		    else
 		      input.append(buffer, nread);
 		  }
-		  // finally convert text to upper case
-		  input = buffer;
-                  write(fd, input.c_str(), input.length()+1);
+		if(connected == 2){	
+		  // need to listen for players answers
+		  nread = read(p1_fd, buffer, buflen);
+		  string p1a = buffer;
+		  nread = read(p2_fd, buffer, buflen);
+		  string p2a = buffer;
+	
+		  // decide who won
+
+		
+		  // add to the total score
+			
+	
+		  // tell them who won
+		  input = "Player 1 won";
+                  write(p2_fd, input.c_str(), input.length()+1);
+		  write(p1_fd, input.c_str(), input.length()+1);
+		}
                 }
             }
         }
