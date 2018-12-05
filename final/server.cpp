@@ -12,6 +12,12 @@
 
 using namespace std;
 
+int p1_score;
+int p2_score;
+
+void increment(int winner);
+int game(string a1, string a2);
+
 int main()
 {
     // inclass example setup
@@ -123,6 +129,9 @@ int main()
 			write(p1_fd,input.c_str(), input.length()+1);
 			write(p2_fd,input.c_str(), input.length()+1);
 			// display game info
+
+
+			// close everything down
 			close(p1_fd);
 			close(p2_fd);
 			FD_CLR(p1_fd, &readfds);
@@ -146,15 +155,20 @@ int main()
 		  string p1a = buffer;
 		  nread = read(p2_fd, buffer, buflen);
 		  string p2a = buffer;
-	
+		  
 		  // decide who won
-
+		  int winner = game(p1a, p2a);
 		
 		  // add to the total score
-			
+		  increment(winner);	
 	
 		  // tell them who won
-		  input = "Player 1 won";
+		  if (winner == 0)
+		    input = "TIE!";
+		  else if (winner == 1)
+		    input = "Player 1 won!!";
+                  else if (winner == 2)
+                    input = "Player 2 won!!";
                   write(p2_fd, input.c_str(), input.length()+1);
 		  write(p1_fd, input.c_str(), input.length()+1);
 		}
@@ -164,4 +178,34 @@ int main()
     }
   return 0;
 }
+
+
+void increment(int winner){
+  if(winner == 1)
+    p1_score++;
+  else if(winner == 2)
+    p2_score++;
+}
+
+int game(string a1, string a2){
+  // decide who won 
+  if(a1 == a2)
+    return 0;
+  if(a1 == "R" && a2 == "P")
+    return 2;
+  if(a1 == "R" && a2 == "S")
+    return 1;
+  if(a1 == "P" && a2 == "S")
+    return 2;
+  if(a1 == "P" && a2 == "R")
+    return 1;
+  if(a1 == "S" && a2 == "P")
+    return 1;
+  if(a1 == "S" && a2 == "R")
+    return 2;
+}
+
+
+
+
 

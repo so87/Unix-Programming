@@ -75,15 +75,17 @@ int main(int argc, char *argv[])
 	  do{
 	    cout << "Enter R,P,S: ";
 	    cin >> userInput;
-	  }while((strcmp(userInput.c_str(), "R")==0) || (strcmp(userInput.c_str(), "P")==0) || (strcmp(userInput.c_str(), "S")==0));
+	  }while( (userInput!="R") && (userInput!="P") && (userInput!="S") );
 	 // write move to server
          write(sockfd, userInput.c_str(), userInput.length()+1);
-
+	 
+	 cout << "Answer written from the server" << endl;
+	 
 	 // listen for their results
          nread = read(sockfd, buffer, buflen);
 
 	 // decide if we want to quit or not
-         cout << buffer << endl;
+         cout << "From server: " << buffer << endl;
 	}
       }
   }  
