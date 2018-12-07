@@ -38,54 +38,70 @@ int main(int argc, char *argv[])
     string userInput;
     static char buffer[256];
     int buflen = sizeof(buffer);
-
-    cout << "Connected to server!" << endl;
     
     userInput = "READY";
     write(sockfd, userInput.c_str(), userInput.length()+1);
     int ready = 0;
 
     while(1) {
+      // listen for GO
+      nread = read(sockfd, buffer, buflen);
       // clt+d was pressed end the program
       if (userInput.length() == 0){
         cout << "exiting" << endl;
         break;
       }
-      if (userInput == "quit"){
-	cout << "exiting" << endl;
-	break;
-      }
-      nread = read(sockfd, buffer, buflen);
-      cout << buffer <<endl;
-      
       if(strcmp(buffer,"STOP")==0){
 	// read the scoreboard from the server
-	nread = read(sockfd, buffer, buflen);
 	cout << "Programing stopping because the other player left" << endl;
         break;
       }
       else if(strcmp(buffer,"GO")==0)
         ready = 1;
 
+      // tell the user which player they are
+      nread = read(sockfd, buffer, buflen);
+      if(strcmp(buffer,"1") == 0)
+        cout << "You are player 1." << endl;
+      else
+        cout << "You are player 2." << endl;       
+
       // playing the game with the computer
       if(ready){
-        cout << "Starting to play the game" << endl;
 	while(1){
 	  // enter in your move
 	  do{
-	    cout << "Enter R,P,S: ";
+	    // 0=exit, 1=rock, 2=paper, 3=scissors
+	    cout << "0: Exit" << endl;
+	    cout << "1: Rock" << endl;
+	    cout << "2: Paper" << endl;
+	    cout << "3: Scissors" << endl;
+	    cout << "Enter Choice: ";
 	    cin >> userInput;
-	  }while( (userInput!="R") && (userInput!="P") && (userInput!="S") );
+	    cout << endl;
+	  }while( (userInput!="0") && (userInput!="1") && (userInput!="2") && (userInput!="3") );
 	 // write move to server
          write(sockfd, userInput.c_str(), userInput.length()+1);
-	 
-	 cout << "Answer written from the server" << endl;
 	 
 	 // listen for their results
          nread = read(sockfd, buffer, buflen);
 
-	 // decide if we want to quit or not
-         cout << "From server: " << buffer << endl;
+	 // see if someone wanted to stop
+	 if (strcmp(buffer,"STOP") == 0){
+	    nread = read(sockfd, buffer, buflen);
+	    string p1_score = buffer;
+            nread = read(sockfd, buffer, buflen);
+            string p2_score = buffer;
+	    cout << "Game has ended" << endl;
+	    cout << "Final Score" << endl;
+	    cout << "Player 1: " << p1_score << endl;
+	    cout << "Player 2: " << p2_score << endl;
+
+	    return 0;
+	 }
+
+	 // print out the wniner
+         cout << buffer << endl;
 	}
       }
   }  

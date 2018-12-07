@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -116,7 +117,11 @@ int main()
 		      // time to play the game both are connected
 		      input = "GO";
 		      write(p1_fd, input.c_str(), input.length()+1);
-                      write(p2_fd, input.c_str(), input.length()+1); 
+                      write(p2_fd, input.c_str(), input.length()+1);
+		      input = "1";
+                      write(p1_fd, input.c_str(), input.length()+1);
+		      input = "2";
+                      write(p2_fd, input.c_str(), input.length()+1);
                     }
                 }	
                 else {
@@ -125,13 +130,14 @@ int main()
 		  while(true) {
                     nread = read(fd, buffer, buflen);
                     if((nread == 0 ) || (buffer == "STOP")){
-			input = "STOP";
-			write(p1_fd,input.c_str(), input.length()+1);
-			write(p2_fd,input.c_str(), input.length()+1);
 			// display game info
-
+			input = "STOP";
+                        write(p1_fd,input.c_str(), input.length()+1);
+                        write(p2_fd,input.c_str(), input.length()+1);
 
 			// close everything down
+			cout << "Releasing player 1 using fd" << p1_fd << endl;
+			cout << "Releasing player 2 using fd" << p2_fd << endl;
 			close(p1_fd);
 			close(p2_fd);
 			FD_CLR(p1_fd, &readfds);
@@ -149,13 +155,42 @@ int main()
 		    else
 		      input.append(buffer, nread);
 		  }
-		if(connected == 2){	
+		if(connected == 2){
+		 while(1){
 		  // need to listen for players answers
 		  nread = read(p1_fd, buffer, buflen);
 		  string p1a = buffer;
 		  nread = read(p2_fd, buffer, buflen);
 		  string p2a = buffer;
-		  
+		 
+		  // check if any of them wants to quit
+		  if((p1a == "0") || (p2a == "0")){
+			input = "STOP";
+			cout << "writing stop " << endl;
+                        write(p1_fd,input.c_str(), input.length()+1);
+                        write(p2_fd,input.c_str(), input.length()+1);
+                        // display game info
+                        input = p1_score;
+                        write(p1_fd,input.c_str(), input.length()+1);
+                        write(p2_fd,input.c_str(), input.length()+1);
+
+                        input = p2_score;
+                        write(p1_fd,input.c_str(), input.length()+1);
+                        write(p2_fd,input.c_str(), input.length()+1);
+
+                        // close everything down
+			cout << "Releasing player 1 using fd" << p1_fd << endl;
+                        cout << "Releasing player 2 using fd" << p2_fd << endl;
+                        close(p1_fd);
+                        close(p2_fd);
+                        FD_CLR(p1_fd, &readfds);
+                        FD_CLR(p2_fd, &readfds);
+                        connected = 0;
+                        maxc--;
+                        maxc--;
+                        break;
+		  }
+ 
 		  // decide who won
 		  int winner = game(p1a, p2a);
 		
@@ -169,10 +204,11 @@ int main()
 		    input = "Player 1 won!!";
                   else if (winner == 2)
                     input = "Player 2 won!!";
-                  write(p2_fd, input.c_str(), input.length()+1);
-		  write(p1_fd, input.c_str(), input.length()+1);
+                  write(p1_fd, input.c_str(), input.length()+1);
+		  write(p2_fd, input.c_str(), input.length()+1);
+		 }
 		}
-                }
+              }
             }
         }
     }
@@ -191,17 +227,17 @@ int game(string a1, string a2){
   // decide who won 
   if(a1 == a2)
     return 0;
-  if(a1 == "R" && a2 == "P")
+  if(a1 == "1" && a2 == "2")
     return 2;
-  if(a1 == "R" && a2 == "S")
+  if(a1 == "1" && a2 == "3")
     return 1;
-  if(a1 == "P" && a2 == "S")
+  if(a1 == "2" && a2 == "3")
     return 2;
-  if(a1 == "P" && a2 == "R")
+  if(a1 == "2" && a2 == "1")
     return 1;
-  if(a1 == "S" && a2 == "P")
+  if(a1 == "3" && a2 == "2")
     return 1;
-  if(a1 == "S" && a2 == "R")
+  if(a1 == "3" && a2 == "1")
     return 2;
 }
 
