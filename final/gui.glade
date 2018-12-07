@@ -84,7 +84,7 @@
             </child>
             <child>
               <object class="GtkButton" id="connect_button">
-                <property name="label" translatable="yes">Rock</property>
+                <property name="label" translatable="yes">Connect</property>
                 <property name="use_action_appearance">True</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

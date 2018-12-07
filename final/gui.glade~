@@ -84,11 +84,11 @@
             </child>
             <child>
               <object class="GtkButton" id="connect_button">
-                <property name="label" translatable="yes">Connect</property>
+                <property name="label" translatable="yes">Rock</property>
+                <property name="use_action_appearance">True</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="yalign">0.52999997138977051</property>
                 <signal name="clicked" handler="connect_clicked" swapped="no"/>
               </object>
               <packing>
@@ -162,6 +162,7 @@
                 <child>
                   <object class="GtkButton" id="rock_button">
                     <property name="label" translatable="yes">Rock</property>
+                    <property name="use_action_appearance">True</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
