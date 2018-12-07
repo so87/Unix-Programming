@@ -1,11 +1,11 @@
-CFLAGS  = `pkg-config --cflags --libs gtk+-3.0`
+CFLAGS  = `pkg-config --cflags --libs gtk+-3.0 gmodule-2.0`
 
 all: client_server
 	chmod +x *
 	@echo Compiled Rock,paper,scissors!
-client_server: player.cpp referee.cpp gui-player.cpp
+client_server: player.cpp referee.cpp gui-player.c
 	g++ player.cpp -o player
-	g++ gui-player.cpp -o gui-player ${CFLAGS}
+	gcc -rdynamic gui-player.c -o gui-player ${CFLAGS}
 	g++ referee.cpp -o referee
 clean: 
 	rm -f player referee gui-player

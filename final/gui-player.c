@@ -4,18 +4,13 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <netdb.h>
-#include <algorithm>
-#include <iostream>
-#include <cstring>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-
-using namespace std;
-
-GtkWidget *g_ip_address_box;
-GtkWidget *g_port_box;
-GtkWidget *g_connection_label;
+GtkEntry *g_ip_address_box;
+GtkEntry *g_port_box;
+GtkWidget *g_connect_button;
 GtkWidget *g_paper_button;
 GtkWidget *g_scissors_button;
 GtkWidget *g_rock_button;
@@ -24,8 +19,15 @@ GtkWidget *g_status_label;
 GtkWidget *g_p1_score_label;
 GtkWidget *g_p2_score_label;
 
-string ip;
-string port;
+char* ip = "";
+char* port = "";
+
+// handlers
+void connect_clicked();
+void rock_clicked();
+void paper_clicked();
+void scissors_clicked();
+void quit_clicked();
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +42,9 @@ int main(int argc, char *argv[])
     gtk_builder_connect_signals(builder, NULL);
 
     // labels and buttons
-    g_connection_label = GTK_WIDGET(gtk_builder_get_object(builder, "connection_label"));
+    g_port_box = GTK_WIDGET(gtk_builder_get_object(builder, "port_box"));
+    g_ip_address_box = GTK_WIDGET(gtk_builder_get_object(builder, "ip_address_box"));
+    g_connect_button = GTK_WIDGET(gtk_builder_get_object(builder, "connect_button"));
     g_paper_button = GTK_WIDGET(gtk_builder_get_object(builder, "paper_button"));
     g_scissors_button = GTK_WIDGET(gtk_builder_get_object(builder, "scissors_button"));
     g_rock_button = GTK_WIDGET(gtk_builder_get_object(builder, "rock_button"));
@@ -61,32 +65,37 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// receive ip address from box
-static void ip_entered(){
-  cout << ip << endl;
+// connected status
+void connect_clicked(){
+  printf("Connecting");
+  port = gtk_entry_get_text(g_port_box);
   ip = gtk_entry_get_text(g_ip_address_box);
-  cout << ip << endl;
+  printf(ip);
+  printf(port);
+
+  // make a connection to that socket and update the global file descriptor
 }
 
-// receive port from box
-static void port_entered(){
-  cout << port << endl;
-  port = gtk_entry_get_text(); 
-  cout << port << endl;
+// rock
+void rock_clicked(){
+  printf("Rock\n");
 }
 
-// updated the not/connected status
+// quit clicked
+void quit_clicked(){
 
-
-
-// click rock button
-
+}
 
 // click scissors button
+void scissors_clicked(){
+
+}
 
 
 // click paper button
+void paper_clicked(){
 
+}
 
 // update the status to "enter an answer or waiting"
 
